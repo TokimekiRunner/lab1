@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -6,14 +7,20 @@ public class Main {
     private static String fileName = "test.txt";
     private static String resultsFileName = "testResults.txt";
     public static void main(String[] args) {//主函数入口
-        ReadFile();
-        readWordsToGraph();
+//        TestFunc3_brige();
+//        TestFunc4_generate();
+        TestFunc5_path();
     }
+
 
     public static void ReadFile() {
         File file = new File(fileName);
         BufferedReader reader = null;
         try{
+            //清空之前的文件testResults文件并重新建
+            File fileres = new File(fileName.substring(0, fileName.length()-4) +"Results.txt");
+            fileres.delete();
+            fileres.createNewFile();
             reader = new BufferedReader(new FileReader(file));
             String tempString = null;
             while((tempString = reader.readLine())!=null){
@@ -28,6 +35,8 @@ public class Main {
                     Words[i] = m.replaceAll("").trim().toLowerCase();
                 }
                 //System.out.println("line"+line+":"+tempString);
+
+
                 for(String str :Words){
                     write(fileName.substring(0, fileName.length()-4) +"Results.txt",str+"\r\n");
                 }
@@ -50,7 +59,7 @@ public class Main {
         }
     }
 
-     static void readWordsToGraph() {
+     static CGraph readWordsToGraph() {
          CGraph graph = new CGraph();
          File file = new File(resultsFileName);
          BufferedReader reader = null;
@@ -73,5 +82,54 @@ public class Main {
              e.printStackTrace();
          }
          graph.selfprintmatrix();//打印邻接矩阵
+         return graph;
+     }
+
+     static void TestFunc3_brige(){
+         ReadFile();
+         CGraph graph = readWordsToGraph();
+         Scanner scanner = new Scanner(System.in);
+         while(true){
+             System.out.println("please input two word or (0,0) to exit:");
+             String word1 = scanner.next();
+             String word2 = scanner.next();
+             if(word1.equals("0") && word2.equals("0")) break;
+             String res = graph.queryBridgeWords(word1,word2);
+             System.out.print(res);
+         }
+         scanner.close();
+         return;
+     }
+
+     static void TestFunc4_generate(){
+         ReadFile();
+         CGraph graph = readWordsToGraph();
+         Scanner scanner = new Scanner(System.in);
+         while(true){
+             System.out.println("please input your text or -1 to exit:");
+             String inputText = "";
+             inputText = scanner.nextLine();
+             if(inputText.equals("-1")) break;
+             String res = graph.generateNewText(inputText);
+             System.out.print(res+"\n");
+
+         }
+         scanner.close();
+     }
+
+     static void TestFunc5_path(){
+         ReadFile();
+         CGraph graph = readWordsToGraph();
+         Scanner scanner = new Scanner(System.in);
+         while(true){
+             System.out.println("please input two word or (0,0) to exit(NW:not a word):");
+             String word1 = scanner.next();
+             String word2 = scanner.next();
+             if(word1.equals("0") && word2.equals("0")) break;
+             String res = graph.calcShortestPath(word1,word2);
+             System.out.print(res);
+         }
+         scanner.close();
+         return;
      }
 }
