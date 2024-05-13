@@ -2,14 +2,19 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Objects;
 public class Main {
     private static String fileName = "test.txt";
     private static String resultsFileName = "testResults.txt";
     public static void main(String[] args) {//主函数入口
 //        TestFunc3_brige();
 //        TestFunc4_generate();
-        TestFunc5_path();
+ //       TestFunc5_path();
+        TestFunc6_generate();
+
     }
 
 
@@ -25,7 +30,7 @@ public class Main {
             String tempString = null;
             while((tempString = reader.readLine())!=null){
                 String s = tempString.replaceAll("[\\p{Punct}]+", " ");  //标点变成空格
-                System.out.println(s);
+            //    System.out.println(s);
                 String[] Words = s.trim().split("\\s+");   //按空格分割
 
                 for(int i = 0;i<Words.length;i++)   //正则表达式匹配字母并变成小写
@@ -52,7 +57,7 @@ public class Main {
             //new File(fileName);
             FileWriter writer = new FileWriter(fileName,true);
             writer.write(str);;
-            System.out.println("write successfully");//一个单词打印一次
+       //     System.out.println("write successfully");//一个单词打印一次
             writer.close();
         }catch(IOException e){//抛出异常，必须的
             e.printStackTrace();
@@ -72,10 +77,10 @@ public class Main {
                  word2 = tempString;
                  if (word1 != null) {
                      graph.selfaddEdge(word1, word2);
-                     System.out.println(word1+word2);
+                //     System.out.println(word1+word2);
                  }
                  word1 = tempString;
-                 System.out.println(tempString);
+        //         System.out.println(tempString);
              }
              reader.close();
          } catch (IOException e) {
@@ -132,4 +137,10 @@ public class Main {
          scanner.close();
          return;
      }
+
+    static void TestFunc6_generate(){
+        ReadFile();
+        CGraph graph = readWordsToGraph();
+        graph.Randomwalk();
+    }
 }

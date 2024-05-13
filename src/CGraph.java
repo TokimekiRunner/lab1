@@ -2,6 +2,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
+import java.util.List;
+import java.util.Optional;
+import java.util.Objects;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class CGraph {
     private int vertex;//num of vertex
@@ -15,6 +21,77 @@ public class CGraph {
         vertex = 0;
         edge = 0;
     }
+
+
+
+    public void Randomwalk(){
+        String filePath = "Randomwalk.txt";
+        int startNode = (int) (Math.random() * MAX);
+        List<Integer> visitedNodes = new ArrayList<>();  // 记录经过的节点
+        List<int[]> visitedEdges = new ArrayList<>();  // 记录经过的边
+
+        int currentNode = startNode;
+        boolean stop = false;
+
+        while (!stop) {
+            visitedNodes.add(currentNode);
+
+            // 获取当前节点的出边
+            int[] edges = Matrix[currentNode];
+
+            // 随机选择下一个节点
+            List<Integer> possibleNextNodes = new ArrayList<>();
+            for (int i = 0; i < MAX; i++) {
+                if (edges[i] != 0) {
+                    possibleNextNodes.add(i);
+                }
+            }
+
+            if (possibleNextNodes.isEmpty()) {
+                // 当前节点不存在出边，停止游走
+                stop = true;
+            } else {
+                // 随机选择下一个节点
+                int randomIndex = (int) (Math.random() * possibleNextNodes.size());
+                int nextNode = possibleNextNodes.get(randomIndex);
+
+                // 检查是否出现重复边
+                int[] targetPair = new int[]{currentNode, nextNode};
+                //不能使用List.contain判断是否包括,故使用改
+                Optional<int[]> first = visitedEdges.stream()
+                        .filter(pair -> Objects.equals(pair[0], targetPair[0]) && Objects.equals(pair[1], targetPair[1]))
+                        .findFirst();
+                if (first.isPresent()) {
+                 //   System.out.println("STOP!!!!");
+                    stop = true;
+                    currentNode = nextNode;
+                    visitedNodes.add(currentNode);//补充最后一个点
+                } else {                visitedEdges.add(new int[]{currentNode, nextNode});
+                    currentNode = nextNode;
+                }
+            }
+        }
+
+
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                for(int i = 0;i<visitedNodes.size();i++){
+                System.out.print(index[visitedNodes.get(i)]+" ");
+                writer.write(index[visitedNodes.get(i)]+" ");}
+                System.out.println("Write Successfully!");
+
+            } catch (IOException e) {
+                System.out.println("An error occurred while writing to the file.");
+                e.printStackTrace();
+            }
+
+        //System.out.println("Visited Nodes: " + visitedNodes);
+//        for (int[] pair : visitedEdges) {
+//            System.out.print("First element: " + pair[0]);
+//            System.out.println("Second element: " + pair[1]);
+//        }
+    }
+
     public void selfprintmatrix(){
         for (int i = 0; i < MAX; i++) {
             for (int j = 0; j < MAX; j++) {
@@ -341,6 +418,9 @@ public class CGraph {
         }
         adj[index1].addNode(word2,index2);
     }
+
+
+
 }
 
 class Node{
