@@ -12,8 +12,8 @@ public class Main {
     public static void main(String[] args) {//主函数入口
 //        TestFunc3_brige();
 //        TestFunc4_generate();
- //       TestFunc5_path();
-        TestFunc6_generate();
+        TestFunc5_path();
+//        TestFunc6_generate();
 
     }
 
