@@ -142,5 +142,7 @@ public class Main {
         ReadFile();
         CGraph graph = readWordsToGraph();
         graph.Randomwalk();
+        graph.Drawpic();
     }
+
 }

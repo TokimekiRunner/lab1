@@ -1,0 +1,14 @@
+digraph G {
+  to -> explore;
+  to -> seek;
+  explore -> strange;
+  strange -> new;
+  new -> worlds;
+  new -> life;
+  new -> civilizations;
+  worlds -> to;
+  seek -> out;
+  out -> new;
+  life -> and;
+  and -> new;
+}

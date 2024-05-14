@@ -23,7 +23,30 @@ public class CGraph {
     }
 
 
+    public void Drawpic(){
 
+        String filePath = "graph.dot";
+
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write("digraph G {\n");
+
+            int numVertices = Matrix.length;
+            for (int i = 0; i < numVertices; i++) {
+                for (int j =  0;j < numVertices; j++) {
+                    if (Matrix[i][j] != 0) {
+                        writer.write("  " + index[i] + " -> " + index[j] + ";\n");
+                    }
+                }
+            }
+
+            writer.write("}");
+            System.out.println("DOT file generated successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while generating the DOT file.");
+            e.printStackTrace();
+        }
+
+    }
     public void Randomwalk(){
         String filePath = "Randomwalk.txt";
         int startNode = (int) (Math.random() * MAX);
