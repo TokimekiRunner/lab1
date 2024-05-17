@@ -7,14 +7,15 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Objects;
 public class Main {
-    private static String fileName = "test.txt";
-    private static String resultsFileName = "testResults.txt";
+    private static String fileName = "./test/test1.txt";
+//    private static String fileName = "test.txt";
+    private static String resultsFileName = "./test/test1Results.txt";
+//    private static String resultsFileName = "testResults.txt";
     public static void main(String[] args) {//主函数入口
+        TestFunc6and2_generate();
 //        TestFunc3_brige();
 //        TestFunc4_generate();
- //       TestFunc5_path();
-        TestFunc6_generate();
-
+        TestFunc5_path();
     }
 
 
@@ -29,7 +30,8 @@ public class Main {
             reader = new BufferedReader(new FileReader(file));
             String tempString = null;
             while((tempString = reader.readLine())!=null){
-                String s = tempString.replaceAll("[\\p{Punct}]+", " ");  //标点变成空格
+//                String s = tempString.replaceAll("[\\p{Punct}]+", " ");  //标点变成空格
+                String s = tempString.replaceAll("[\\p{Punct}\\u201C\\u201D]+", " ");  //标点变空格，注意左右引号
             //    System.out.println(s);
                 String[] Words = s.trim().split("\\s+");   //按空格分割
 
@@ -86,7 +88,7 @@ public class Main {
          } catch (IOException e) {
              e.printStackTrace();
          }
-         graph.selfprintmatrix();//打印邻接矩阵
+//         graph.selfprintmatrix();//打印邻接矩阵
          return graph;
      }
 
@@ -138,11 +140,11 @@ public class Main {
          return;
      }
 
-    static void TestFunc6_generate(){
+    static void TestFunc6and2_generate(){
         ReadFile();
         CGraph graph = readWordsToGraph();
         graph.Randomwalk();
-        graph.Drawpic();
+        graph.Drawpic(graph.Matrix);
     }
 
 }

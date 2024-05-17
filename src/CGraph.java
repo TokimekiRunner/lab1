@@ -11,21 +11,21 @@ import java.io.IOException;
 
 public class CGraph {
     private int vertex;//num of vertex
-    private int edge;//num of edge
-    private  int MAX = 10;
-    private LinkedList[] adj = new LinkedList[MAX];
+//    private int edge;//num of edge
+    private  int MAX = 200;
+//    private LinkedList[] adj = new LinkedList[MAX];
 
     String[] index = new String[MAX];//每个单词对应一个索引word->index转换表
     int[][] Matrix = new int[MAX][MAX];//邻接矩阵，里面存的是权值
     public CGraph(){//初始化
         vertex = 0;
-        edge = 0;
+//        edge = 0;
     }
 
 
-    public void Drawpic(){
+    public void Drawpic(int [][] Matrix){
 
-        String filePath = "graph.dot";
+        String filePath = "./res/graph.dot";
 
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write("digraph G {\n");
@@ -46,10 +46,11 @@ public class CGraph {
             e.printStackTrace();
         }
         String dotFilePath = filePath;
-        String outputFilePath = "example.png";
+        String outputFilePath = "./res/example.png";
 
         try {
-            String command = "dot -Tpng " + dotFilePath + " -o " + outputFilePath;
+            String command = "dot.exe -Tpng " + dotFilePath + " -o " + outputFilePath;
+//            String command = "dot -Tpng " + dotFilePath + " -o " + outputFilePath;
             Process process = Runtime.getRuntime().exec(command);
             int exitCode = process.waitFor();
 
@@ -321,6 +322,7 @@ public class CGraph {
         //不断更新,遍历路径情况
         for(int i=0;i<visited.size();i++){
             //对每条路径，dijkstra 算法
+            int origin_size = visited.size();  //原来的总分支数
             for(int v=0;v<vertex;v++){
                 //找当前最小
                 int mindist = Integer.MAX_VALUE;
@@ -361,8 +363,6 @@ public class CGraph {
                             }
                         }
                     }
-
-
                 }
                 //更新状态（原来的分支）
                 visited.get(i)[minindex.get(0)] = true;
@@ -374,6 +374,27 @@ public class CGraph {
                         paths.get(i)[j] = minindex.get(0);
                     }
                 }
+            }
+            int now_size = visited.size();  //现在的总分支数 now_size - origin_size = 本次产生的分支
+            //处理可能的重复分支
+            boolean repeat = false;
+            for(int j=0;j<i;j++){
+                boolean tmpflag = true;
+                for(int k=0;k<vertex;k++){
+                    if(paths.get(j)[k]!=paths.get(i)[k]){
+                        tmpflag = false;
+                        break;
+                    }
+                }
+                if(tmpflag){
+                    repeat = true;  //说明此时分支i与之前的分支重复，应当删除由分支i产生的所有子分支
+                    break;
+                }
+            }
+            if(repeat){
+                visited.subList(origin_size,now_size).clear();
+                paths.subList(origin_size,now_size).clear();
+                distant.subList(origin_size,now_size).clear();
             }
         }
         //根据paths，找出所有路径
@@ -402,12 +423,6 @@ public class CGraph {
 
     public String calcShortestPath(String word1, String word2){
         String res = "";
-        //更改Matrix矩阵
-//        for(int i=0;i<vertex;i++){
-//            for(int j=0;j<vertex;j++){
-//                Matrix[i][j] = (Matrix[i][j]==0)?Integer.MAX_VALUE:Matrix[i][j];
-//            }
-//        }
         int mode = 1; //1:展示word1到word2的所有路径 2:只有一个word
         if(word1.equals("NW") && word2.equals("NW")) return res;  //input err
         if(word1.equals("NW") || word2.equals("NW")){
@@ -422,95 +437,5 @@ public class CGraph {
             res = getPathsOneWord(word);
         }
         return res;
-    }
-
-    public void addEdge(String word1,String word2){
-        int index1 = -1;
-        int index2 = -1;
-        //找到单词1对应的节点，或者创建一个
-        for(int i = 0;i<vertex;i++){
-            if(adj[i].getHead().word.equals(word1)){
-                index1 = i;
-            }
-        }
-        if(-1 == index1){
-            adj[vertex] = new LinkedList(word1);
-            index1 = vertex;
-            vertex++;
-        }
-        //找到单词2对应的节点，或者创建一个
-        for(int i = 0;i<vertex;i++){
-            if(adj[i].getHead().word.equals(word2)){
-                index2 = i;
-            }
-        }
-        if(-1 == index2){
-            adj[vertex] = new LinkedList(word2);
-            index2 = vertex;
-            vertex++;
-        }
-        for(Node node =adj[index1].getHead().next;node!=null;node=node.next){//权值增加
-            if(node.word.equals(word2)){
-                node.weight++;
-                return;
-            }
-        }
-        adj[index1].addNode(word2,index2);
-    }
-
-
-
-}
-
-class Node{
-    public String word;
-    public int weight;
-    public Node next;
-    public int num;
-    public boolean painted;
-    public Node(){
-        word = null;
-        next = null;
-        num = weight = 0;
-    }
-    public Node(String w,int n){
-        word = w;
-        weight = 1;
-        next = null;
-        num = n;
-    }
-}
-
-class LinkedList{
-    private Node head = null;
-    private Node tail = null;
-    public int nodeNum;
-    public LinkedList(){
-        nodeNum = -1;
-    }
-    public LinkedList(String w){
-        nodeNum = 0;
-        Node newNode = new Node(w,-1);
-        head = newNode;
-        tail = newNode;
-    }
-    public boolean isEmpty(){
-        return head==null;
-    }
-    public void addNode(String w,int n){//wordnext, indexnext
-        Node newNode = new Node(w,n);
-        if(isEmpty()){
-            head = tail = newNode;
-        }else{
-            tail.next = newNode;
-            tail = newNode;
-        }
-        nodeNum++;
-    }
-    public Node getHead(){
-        return head;
-    }
-    public Node getTail(){
-        return tail;
     }
 }
