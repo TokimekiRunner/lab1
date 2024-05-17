@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Objects;
 public class Main {
-    private static String fileName = "test.txt";
-    private static String resultsFileName = "testResults.txt";
+    private static String fileName = "./test/test1.txt";
+    private static String resultsFileName = "./test/test1Results.txt";
     public static void main(String[] args) {//主函数入口
 //        TestFunc3_brige();
 //        TestFunc4_generate();
@@ -86,7 +86,7 @@ public class Main {
          } catch (IOException e) {
              e.printStackTrace();
          }
-         graph.selfprintmatrix();//打印邻接矩阵
+//         graph.selfprintmatrix();//打印邻接矩阵
          return graph;
      }
 
@@ -142,5 +142,7 @@ public class Main {
         ReadFile();
         CGraph graph = readWordsToGraph();
         graph.Randomwalk();
+        graph.Drawpic();
     }
+
 }

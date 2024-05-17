@@ -12,8 +12,8 @@ import java.io.IOException;
 public class CGraph {
     private int vertex;//num of vertex
     private int edge;//num of edge
-    private  int MAX = 10;
-    private LinkedList[] adj = new LinkedList[MAX];
+    private  int MAX = 200;
+//    private LinkedList[] adj = new LinkedList[MAX];
 
     String[] index = new String[MAX];//每个单词对应一个索引word->index转换表
     int[][] Matrix = new int[MAX][MAX];//邻接矩阵，里面存的是权值
@@ -23,7 +23,30 @@ public class CGraph {
     }
 
 
+    public void Drawpic(){
 
+        String filePath = "graph.dot";
+
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write("digraph G {\n");
+
+            int numVertices = Matrix.length;
+            for (int i = 0; i < numVertices; i++) {
+                for (int j =  0;j < numVertices; j++) {
+                    if (Matrix[i][j] != 0) {
+                        writer.write("  " + index[i] + " -> " + index[j] + ";\n");
+                    }
+                }
+            }
+
+            writer.write("}");
+            System.out.println("DOT file generated successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while generating the DOT file.");
+            e.printStackTrace();
+        }
+
+    }
     public void Randomwalk(){
         String filePath = "Randomwalk.txt";
         int startNode = (int) (Math.random() * MAX);
@@ -385,93 +408,93 @@ public class CGraph {
         return res;
     }
 
-    public void addEdge(String word1,String word2){
-        int index1 = -1;
-        int index2 = -1;
-        //找到单词1对应的节点，或者创建一个
-        for(int i = 0;i<vertex;i++){
-            if(adj[i].getHead().word.equals(word1)){
-                index1 = i;
-            }
-        }
-        if(-1 == index1){
-            adj[vertex] = new LinkedList(word1);
-            index1 = vertex;
-            vertex++;
-        }
-        //找到单词2对应的节点，或者创建一个
-        for(int i = 0;i<vertex;i++){
-            if(adj[i].getHead().word.equals(word2)){
-                index2 = i;
-            }
-        }
-        if(-1 == index2){
-            adj[vertex] = new LinkedList(word2);
-            index2 = vertex;
-            vertex++;
-        }
-        for(Node node =adj[index1].getHead().next;node!=null;node=node.next){//权值增加
-            if(node.word.equals(word2)){
-                node.weight++;
-                return;
-            }
-        }
-        adj[index1].addNode(word2,index2);
-    }
-
-
-
-}
-
-class Node{
-    public String word;
-    public int weight;
-    public Node next;
-    public int num;
-    public boolean painted;
-    public Node(){
-        word = null;
-        next = null;
-        num = weight = 0;
-    }
-    public Node(String w,int n){
-        word = w;
-        weight = 1;
-        next = null;
-        num = n;
-    }
-}
-
-class LinkedList{
-    private Node head = null;
-    private Node tail = null;
-    public int nodeNum;
-    public LinkedList(){
-        nodeNum = -1;
-    }
-    public LinkedList(String w){
-        nodeNum = 0;
-        Node newNode = new Node(w,-1);
-        head = newNode;
-        tail = newNode;
-    }
-    public boolean isEmpty(){
-        return head==null;
-    }
-    public void addNode(String w,int n){//wordnext, indexnext
-        Node newNode = new Node(w,n);
-        if(isEmpty()){
-            head = tail = newNode;
-        }else{
-            tail.next = newNode;
-            tail = newNode;
-        }
-        nodeNum++;
-    }
-    public Node getHead(){
-        return head;
-    }
-    public Node getTail(){
-        return tail;
-    }
+//    public void addEdge(String word1,String word2){
+//        int index1 = -1;
+//        int index2 = -1;
+//        //找到单词1对应的节点，或者创建一个
+//        for(int i = 0;i<vertex;i++){
+//            if(adj[i].getHead().word.equals(word1)){
+//                index1 = i;
+//            }
+//        }
+//        if(-1 == index1){
+//            adj[vertex] = new LinkedList(word1);
+//            index1 = vertex;
+//            vertex++;
+//        }
+//        //找到单词2对应的节点，或者创建一个
+//        for(int i = 0;i<vertex;i++){
+//            if(adj[i].getHead().word.equals(word2)){
+//                index2 = i;
+//            }
+//        }
+//        if(-1 == index2){
+//            adj[vertex] = new LinkedList(word2);
+//            index2 = vertex;
+//            vertex++;
+//        }
+//        for(Node node =adj[index1].getHead().next;node!=null;node=node.next){//权值增加
+//            if(node.word.equals(word2)){
+//                node.weight++;
+//                return;
+//            }
+//        }
+//        adj[index1].addNode(word2,index2);
+//    }
+//
+//
+//
+//}
+//
+//class Node{
+//    public String word;
+//    public int weight;
+//    public Node next;
+//    public int num;
+//    public boolean painted;
+//    public Node(){
+//        word = null;
+//        next = null;
+//        num = weight = 0;
+//    }
+//    public Node(String w,int n){
+//        word = w;
+//        weight = 1;
+//        next = null;
+//        num = n;
+//    }
+//}
+//
+//class LinkedList{
+//    private Node head = null;
+//    private Node tail = null;
+//    public int nodeNum;
+//    public LinkedList(){
+//        nodeNum = -1;
+//    }
+//    public LinkedList(String w){
+//        nodeNum = 0;
+//        Node newNode = new Node(w,-1);
+//        head = newNode;
+//        tail = newNode;
+//    }
+//    public boolean isEmpty(){
+//        return head==null;
+//    }
+//    public void addNode(String w,int n){//wordnext, indexnext
+//        Node newNode = new Node(w,n);
+//        if(isEmpty()){
+//            head = tail = newNode;
+//        }else{
+//            tail.next = newNode;
+//            tail = newNode;
+//        }
+//        nodeNum++;
+//    }
+//    public Node getHead(){
+//        return head;
+//    }
+//    public Node getTail(){
+//        return tail;
+//    }
 }
