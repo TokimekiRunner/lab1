@@ -45,23 +45,7 @@ public class CGraph {
             System.out.println("An error occurred while generating the DOT file.");
             e.printStackTrace();
         }
-        String dotFilePath = filePath;
-        String outputFilePath = "example.png";
 
-        try {
-            String command = "dot -Tpng " + dotFilePath + " -o " + outputFilePath;
-            Process process = Runtime.getRuntime().exec(command);
-            int exitCode = process.waitFor();
-
-            if (exitCode == 0) {
-                System.out.println("DOT file converted to PNG successfully.");
-            } else {
-                System.out.println("Failed to convert DOT file to PNG. Exit code: " + exitCode);
-            }
-        } catch (IOException | InterruptedException e) {
-            System.out.println("An error occurred while executing the command.");
-            e.printStackTrace();
-        }
     }
     public void Randomwalk(){
         String filePath = "Randomwalk.txt";
