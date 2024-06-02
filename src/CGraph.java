@@ -12,7 +12,7 @@ import java.io.IOException;
 public class CGraph {
     private int vertex;//num of vertex
 //    private int edge;//num of edge
-    private  int MAX = 200;
+    private  int MAX = 100;
 //    private LinkedList[] adj = new LinkedList[MAX];
 
     String[] index = new String[MAX];//每个单词对应一个索引word->index转换表
@@ -64,9 +64,20 @@ public class CGraph {
             e.printStackTrace();
         }
     }
+
     public void Randomwalk(){
         String filePath = "Randomwalk.txt";
-        int startNode = (int) (Math.random() * MAX);
+        int startNode = 0 ;
+        int flag = 0;
+        while (flag==0) {
+            startNode = (int) (Math.random() * MAX);
+            for (int i = 0; i < MAX; i++) {
+                if (Matrix[startNode][i] != 0) {
+                    flag = 1;
+                    break;
+                }
+            }
+        }
         List<Integer> visitedNodes = new ArrayList<>();  // 记录经过的节点
         List<int[]> visitedEdges = new ArrayList<>();  // 记录经过的边
 

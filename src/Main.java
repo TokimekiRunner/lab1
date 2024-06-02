@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Objects;
 public class Main {
-    private static String fileName = "./test/test1.txt";
+    private static String fileName = "test.txt";
 //    private static String fileName = "test.txt";
-    private static String resultsFileName = "./test/test1Results.txt";
+    private static String resultsFileName = "testResults.txt";
 //    private static String resultsFileName = "testResults.txt";
     public static void main(String[] args) {//主函数入口
         TestFunc6and2_generate();
 //        TestFunc3_brige();
 //        TestFunc4_generate();
-        TestFunc5_path();
+  //      TestFunc5_path();
     }
 
 
